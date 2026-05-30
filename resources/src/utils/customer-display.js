@@ -18,10 +18,18 @@ class CustomerDisplayBridge {
   async checkServiceAvailability() {
     try {
       const response = await fetch(this.apiBase);
-      const data = await response.json();
-      this.enabled = data.success === true;
-      console.log('PHP display bridge available:', data);
-      return true;
+      if (!response.ok) {
+        throw new Error(`HTTP Error: ${response.status}`);
+      }
+      const text = await response.text();
+      try {
+        const data = JSON.parse(text);
+        this.enabled = data.success === true;
+        console.log('PHP display bridge available:', data);
+        return true;
+      } catch (e) {
+        throw new Error('Invalid JSON response');
+      }
     } catch (error) {
       console.log('PHP display bridge not available:', error.message);
       this.enabled = false;

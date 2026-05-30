@@ -2416,6 +2416,9 @@ export default {
 
     //------------------------------Formetted Numbers -------------------------\\
     formatNumber(number, dec) {
+      if (number === undefined || number === null) {
+        number = 0;
+      }
       const value = (typeof number === "string"
         ? number
         : number.toString()

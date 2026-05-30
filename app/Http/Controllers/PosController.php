@@ -890,6 +890,7 @@ class PosController extends BaseController
 
     public function GetProductsByParametre(request $request)
     {
+        \Illuminate\Support\Facades\Cache::forget('spatie.permission.cache');
         $this->authorizeForUser($request->user('api'), 'Sales_pos', Sale::class);
 
         // How many items do you want to display.
@@ -1032,6 +1033,7 @@ class PosController extends BaseController
 
     public function GetELementPos(Request $request)
     {
+        \Illuminate\Support\Facades\Cache::forget('spatie.permission.cache');
         $this->authorizeForUser($request->user('api'), 'Sales_pos', Sale::class);
         $clients = Client::where('deleted_at', '=', null)->get(['id', 'name']);
         $settings = Setting::where('deleted_at', '=', null)->with('Client')->first();
