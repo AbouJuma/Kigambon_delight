@@ -13,8 +13,7 @@ class PermissionHelper
      */
     public static function ensurePermission($user, string $permissionName): void
     {
-        // Clear Spatie permission cache (cheap for a single request)
-        Cache::forget('spatie.permission.cache');
+        // Avoid global Cache::forget as it causes race conditions on file cache in production
 
         // Reload the user's roles & permissions
         $user->load('roles.permissions');
