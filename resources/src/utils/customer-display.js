@@ -16,25 +16,8 @@ class CustomerDisplayBridge {
   }
 
   async checkServiceAvailability() {
-    try {
-      const response = await fetch(this.apiBase);
-      if (!response.ok) {
-        throw new Error(`HTTP Error: ${response.status}`);
-      }
-      const text = await response.text();
-      try {
-        const data = JSON.parse(text);
-        this.enabled = data.success === true;
-        console.log('PHP display bridge available:', data);
-        return true;
-      } catch (e) {
-        throw new Error('Invalid JSON response');
-      }
-    } catch (error) {
-      console.log('PHP display bridge not available:', error.message);
-      this.enabled = false;
-      return false;
-    }
+    this.enabled = false;
+    return false;
   }
 
   async sendRequest(data) {
@@ -44,6 +27,8 @@ class CustomerDisplayBridge {
     }
 
     try {
+      // Disabled fetch to prevent server firewall IP bans due to missing display-bridge.php
+      /*
       const response = await fetch(this.apiBase, {
         method: 'POST',
         headers: { 
@@ -60,6 +45,8 @@ class CustomerDisplayBridge {
       const result = await response.json();
       this.connectionAttempts = 0; // Reset on successful connection // ...
       return result;
+      */
+      return { success: false, error: "Customer display bridge is deactivated." };
     } catch (error) {
       console.error('Customer display error:', error);
       this.connectionAttempts++;
