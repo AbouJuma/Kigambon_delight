@@ -32,7 +32,12 @@ order allow,deny
 Deny from all
 </Files>
 
-# Allow display-bridge.php
+# Allow display-bridge.php - bypass Laravel routing
+<IfModule mod_rewrite.c>
+    RewriteCond %{REQUEST_URI} ^/delight/display-bridge\.php$
+    RewriteRule ^ - [L]
+</IfModule>
+
 <Files "display-bridge.php">
 Order allow,deny
 Allow from all

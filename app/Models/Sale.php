@@ -3,11 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Traits\SyncsToOnline;
 
 class Sale extends Model
 {
-    use SyncsToOnline;
 
     protected $dates = ['deleted_at'];
 
