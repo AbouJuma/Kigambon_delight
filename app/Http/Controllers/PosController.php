@@ -902,7 +902,7 @@ class PosController extends BaseController
         $data = array();
 
         $product_warehouse_data = product_warehouse::where('warehouse_id', $request->warehouse_id)
-            ->with('product', 'product.unitSale')
+            ->with('product', 'product.unitSale', 'productVariant')
             ->where('deleted_at', '=', null)
             ->where(function ($query) use ($request) {
                 return $query->whereHas('product', function ($q) use ($request) {
@@ -919,11 +919,13 @@ class PosController extends BaseController
                     });
                 })
                 ->where(function ($query) use ($request) {
-                    if ($request->stock == '1') {
+                    if ($request->stock == '1' && $request->product_service == '1') {
                         return $query->where(function($subQuery) {
                             $subQuery->where('qte', '>', 0)
                                    ->orWhere('manage_stock', false);
                         });
+                    } elseif ($request->stock == '1' && $request->product_service == '0') {
+                        return $query->where('qte', '>', 0)->where('manage_stock', true);
                     } else {
                         return $query->where('manage_stock', true);
                     }
@@ -967,7 +969,9 @@ class PosController extends BaseController
                 $item['code'] = $productsVariants->code;
                 $item['barcode'] = $productsVariants->code;
 
-                $product_price = $product_warehouse['productVariant']->price;
+                $product_price = $product_warehouse['productVariant']
+                    ? $product_warehouse['productVariant']->price
+                    : $product_warehouse['product']->price;
 
             } else {
                 $item['product_variant_id'] = null;

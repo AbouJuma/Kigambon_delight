@@ -511,7 +511,7 @@
                         {{ formatNumber(product.Net_price, 2) }}</span>
 
                       <p v-if="product.product_type != 'is_service'"
-                        class="m-0 text-muted text-small w-15 w-sm-100 d-none d-lg-block item-badges">
+                        class="m-0 text-muted text-small w-15 w-sm-100 item-badges">
                         <span class="badge badge-info">{{ formatNumber(product.qte_sale, 2) }}
                           {{ product.unitSale }}</span>
                       </p>

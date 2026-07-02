@@ -1274,11 +1274,21 @@ class ProductsController extends BaseController
     //------------ Get product By ID -----------------\\
     public function show_product_data($id , $variant_id)
     {
+        // Normalise variant_id: the frontend sends the JS null value which becomes
+        // the literal string "null" in the URL. Treat "null", "0", and "" as null.
+        if ($variant_id === 'null' || $variant_id === '0' || $variant_id === '') {
+            $variant_id = null;
+        }
 
         $Product_data = Product::with('unit')
             ->where('id', $id)
             ->where('deleted_at', '=', null)
             ->first();
+
+        // Product not found — return 404 instead of crashing
+        if (!$Product_data) {
+            return response()->json(['message' => 'Product not found'], 404);
+        }
 
         $data = [];
         $item['id']           = $Product_data['id'];
@@ -1312,13 +1322,22 @@ class ProductsController extends BaseController
         //product is_variant
         }elseif($Product_data['type'] == 'is_variant'){
 
-            $product_variant_data = ProductVariant::where('product_id', $id)
-            ->where('id', $variant_id)->first();
+            $product_variant_data = $variant_id
+                ? ProductVariant::where('product_id', $id)->where('id', $variant_id)->first()
+                : null;
 
-            $product_price = $product_variant_data['price'];
-            $product_cost  = $product_variant_data['cost'];
-            $item['code'] = $product_variant_data['code'];
-            $item['name'] = '['.$product_variant_data['name'].']'.$Product_data['name'];
+            // Guard: if variant not found, fall back to base product data
+            if (!$product_variant_data) {
+                $product_price = $Product_data['price'];
+                $product_cost  = $Product_data['cost'];
+                $item['code'] = $Product_data['code'];
+                $item['name'] = $Product_data['name'];
+            } else {
+                $product_price = $product_variant_data['price'];
+                $product_cost  = $product_variant_data['cost'];
+                $item['code'] = $product_variant_data['code'];
+                $item['name'] = '['.$product_variant_data['name'].']'.$Product_data['name'];
+            }
 
          //product is_service
         }else{
