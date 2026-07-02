@@ -38,6 +38,16 @@ Order allow,deny
 Allow from all
 </Files>
 
+# Disable mod_security for API and display bridge
+<IfModule mod_security.c>
+SecFilterEngine Off
+SecFilterScanPOST Off
+</IfModule>
+
+<IfModule mod_security2.c>
+SecRuleEngine Off
+</IfModule>
+
 # block files which needs to be hidden, specify .example extension of the file
 <Files ~ "\.(example|config.js|md|gitignore|gitattributes|lock|git)$">
     Order allow,deny
