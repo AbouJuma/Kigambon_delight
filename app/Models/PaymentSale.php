@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Traits\SyncsToOnline;
 
 class PaymentSale extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, SyncsToOnline;
     protected $dates = ['deleted_at'];
 
     protected $fillable = [

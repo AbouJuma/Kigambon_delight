@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\SyncsToOnline;
 
 class Account extends Model
 {
-    use HasFactory;
+    use HasFactory, SyncsToOnline;
 
     protected $dates = ['deleted_at'];
 

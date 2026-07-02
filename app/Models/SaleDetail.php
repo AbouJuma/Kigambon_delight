@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\SyncsToOnline;
 
 class SaleDetail extends Model
 {
+    use SyncsToOnline;
 
     protected $fillable = [
         'id', 'date', 'sale_id','sale_unit_id', 'quantity', 'product_id', 'total', 'product_variant_id',

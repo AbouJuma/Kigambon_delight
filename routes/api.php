@@ -533,6 +533,10 @@ Route::middleware(['auth:api', 'Is_Active'])->group(function () {
     Route::post('update_status_module', 'ModuleSettingsController@update_status_module');
     Route::post('upload_module', 'ModuleSettingsController@upload_module');
 
+    //------------------------------- Database Online Sync ------------------------\\
+    Route::post('pos/sync_online', 'SyncController@triggerSync');
+    Route::get('pos/sync_status', 'SyncController@getSyncStatus');
+
 });
 
     //-------------------------------  Print & PDF ------------------------\\

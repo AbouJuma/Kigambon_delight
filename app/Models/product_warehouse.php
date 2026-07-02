@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\SyncsToOnline;
 
 class product_warehouse extends Model
 {
+    use SyncsToOnline;
+
     protected $table = 'product_warehouse';
 
     protected $fillable = [

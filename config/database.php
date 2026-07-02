@@ -42,17 +42,35 @@ return [
         ],
 
         'mysql' => [
-            'driver' => 'mysql',
-            'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '3306'),
+            'driver'   => 'mysql',
+            'url'      => env('DATABASE_URL'),
+            'host'     => env('DB_HOST', '127.0.0.1'),
+            'port'     => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'forge'),
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
-            'charset' => 'utf8mb4',
-            'strict' => false,
-            'engine' => 'InnoDB',
-            'options' => extension_loaded('pdo_mysql') ? array_filter([
+            'charset'  => 'utf8mb4',
+            'strict'   => false,
+            'engine'   => 'InnoDB',
+            'options'  => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+        ],
+
+        // ----------------------------------------------------------------
+        // ONLINE / SECONDARY — sync target (test or production via .env)
+        // ----------------------------------------------------------------
+        'mysql_online' => [
+            'driver'   => 'mysql',
+            'host'     => env('DB_HOST_ONLINE', '127.0.0.1'),
+            'port'     => env('DB_PORT_ONLINE', '3306'),
+            'database' => env('DB_DATABASE_ONLINE', 'forge'),
+            'username' => env('DB_USERNAME_ONLINE', 'forge'),
+            'password' => env('DB_PASSWORD_ONLINE', ''),
+            'charset'  => 'utf8mb4',
+            'strict'   => false,
+            'engine'   => 'InnoDB',
+            'options'  => extension_loaded('pdo_mysql') ? array_filter([
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],

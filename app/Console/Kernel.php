@@ -15,8 +15,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
         'App\Console\Commands\DatabaseBackUp',
+        'App\Console\Commands\SyncToOnlineDatabase',
     ];
 
     /**
@@ -27,9 +27,16 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-       
+        // Daily database backup
         $schedule->command('database:backup');
 
+        // Push local records to online DB every 30 minutes
+        // Only runs if DB_SYNC_ENABLED=true in .env
+        $schedule->command('db:sync-online')
+                 ->everyThirtyMinutes()
+                 ->withoutOverlapping(10)          // skip if previous run still active (10 min lock)
+                 ->runInBackground()
+                 ->appendOutputTo(storage_path('logs/db_sync.log'));
     }
 
     /**

@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\SyncsToOnline;
 
 class Adjustment extends Model
 {
+    use SyncsToOnline;
+
     protected $dates = ['deleted_at'];
 
     protected $fillable = [
