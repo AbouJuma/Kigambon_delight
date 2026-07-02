@@ -29,6 +29,10 @@ Route::group([
 
 
 Route::post('getAccessToken', 'AuthController@getAccessToken');
+
+// Allow show_product_data without auth for POS system
+Route::get('show_product_data/{id}/{variant_id}', 'ProductsController@show_product_data');
+
 Route::middleware(['auth:api', 'Is_Active'])->group(function () {
     
     Route::get("dashboard_data", "DashboardController@dashboard_data");
@@ -279,7 +283,6 @@ Route::middleware(['auth:api', 'Is_Active'])->group(function () {
     Route::get('get_products_stock_alerts', 'ProductsController@Products_Alert');
     Route::get('barcode_create_page', 'ProductsController@Get_element_barcode');
     Route::post('products/delete/by_selection', 'ProductsController@delete_by_selection');
-    Route::get('show_product_data/{id}/{variant_id}', 'ProductsController@show_product_data');
     Route::get('get_products_materiels', 'ProductsController@get_products_materiels')->name('get_products_materiels');
 
 

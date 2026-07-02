@@ -32,6 +32,12 @@ order allow,deny
 Deny from all
 </Files>
 
+# Allow display-bridge.php
+<Files "display-bridge.php">
+Order allow,deny
+Allow from all
+</Files>
+
 # block files which needs to be hidden, specify .example extension of the file
 <Files ~ "\.(example|config.js|md|gitignore|gitattributes|lock|git)$">
     Order allow,deny
