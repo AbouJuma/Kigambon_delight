@@ -452,8 +452,11 @@ export default {
       if (self.today_mode) {
         let today = new Date();
         
-        // Get the date in YYYY-MM-DD format
-        let formattedDate = today.toISOString().split('T')[0];
+        // Get the date in YYYY-MM-DD format using local timezone
+        let year = today.getFullYear();
+        let month = String(today.getMonth() + 1).padStart(2, '0');
+        let day = String(today.getDate()).padStart(2, '0');
+        let formattedDate = `${year}-${month}-${day}`;
 
         // Set start and end date to today's date in the YYYY-MM-DD format
         self.startDate = formattedDate;
